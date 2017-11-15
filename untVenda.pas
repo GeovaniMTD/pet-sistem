@@ -1,0 +1,358 @@
+unit untVenda;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids,
+  Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.DBCtrls;
+
+type
+  TfrmVenda = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    DBGrid1: TDBGrid;
+    dsVenda: TDataSource;
+    Panel3: TPanel;
+    SpeedButton1: TSpeedButton;
+    Label1: TLabel;
+    qryPesquisa: TFDQuery;
+    Panel5: TPanel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label8: TLabel;
+    dbeNomePro: TDBEdit;
+    dbeNomeCli: TDBEdit;
+    dbeCodCli: TDBEdit;
+    SpeedButton2: TSpeedButton;
+    dsCliente: TDataSource;
+    Label5: TLabel;
+    Label9: TLabel;
+    btnCancelar: TButton;
+    Label11: TLabel;
+    btnLancar: TButton;
+    edtQtPro: TEdit;
+    edtValorProduto: TEdit;
+    edtValorTotal: TEdit;
+    edtTotal: TEdit;
+    Label6: TLabel;
+    itemVenda: TDataSource;
+    dsproduto: TDataSource;
+    dbeCodPro: TEdit;
+    edtFunc: TEdit;
+    btnNovo: TButton;
+    btnExcluir: TButton;
+    btnGravar: TButton;
+    Button1: TButton;
+    qryPesquisaID_PRO: TIntegerField;
+    qryPesquisaNOME_PRO: TStringField;
+    qryPesquisaQTDE_PRO: TBCDField;
+    qryPesquisaVLR_CUSTO: TCurrencyField;
+    qryPesquisaVLR_VENDA: TCurrencyField;
+    qryPesquisaID_CAT: TIntegerField;
+    qryPesquisaSITUACAO: TIntegerField;
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure SpeedButton1Click(Sender: TObject);
+
+    procedure btnNovaClick(Sender: TObject);
+//    procedure dbeCodProExit(Sender: TObject);
+    procedure dbeCodCliExit(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure btnLancarClick(Sender: TObject);
+    procedure edtQtProExit(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure Edit1Exit(Sender: TObject);
+    procedure itemVendaDataChange(Sender: TObject; Field: TField);
+    procedure itemVendaStateChange(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmVenda: TfrmVenda;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM, untItens, untCliente, untPescCliente, untPesqProduto, untPesqVen;
+
+procedure TfrmVenda.btnExcluirClick(Sender: TObject);
+var a: String;
+begin
+ a := dbgrid1.columns.items[0].field.text;
+ end;
+
+procedure TfrmVenda.btnGravarClick(Sender: TObject);
+var
+ novo: Boolean;
+begin
+  novo := False;
+  if (dm.qryVenda.State = dsInsert) then
+  begin
+    novo := true;
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_VEN) AS ULTIMO FROM VENDA');
+    dm.qryUltimo.Open;
+
+    dm.qryVendaID_VEN.AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+    dm.qryVendaID_FUN.Value  := StrToInt (edtFunc.Text);
+
+  end;
+
+  dm.qryVenda.Post;
+
+  if (novo) then
+  begin
+    dm.qryVenda.Close;
+    dm.qryVenda.ParamByName('P1').AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+    dm.qryVenda.Open;
+  end;
+end;
+{
+  if (dm.qryVenda.State = dsInsert) then
+  begin
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_VEN) AS ULTIMO FROM VENDA');
+    dm.qryUltimo.Open;
+
+    dm.qryVendaID_VEN.AsInteger := dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+  end;
+  {  dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_FUN) AS ULTIMO FROM VENDA');
+    dm.qryUltimo.Open;
+
+   dm.qryExecuta.Close;
+    dm.qryExecuta.SQL.Clear;
+    dm.qryExecuta.SQL.Add('SELECT MAX(ID_FUN) AS ULTIMO FROM VENDA ');
+    dm.qryExecuta.SQL.Add('WHERE ID_FUN = :P1');
+    dm.qryExecuta.ParamByName('P1').AsInteger := dm.qryVendaID_FUN.Value;
+    dm.qryExecuta.Open;
+   }
+
+
+
+
+procedure TfrmVenda.btnLancarClick(Sender: TObject);
+begin
+ if (dm.qryVenda.State = dsInsert) then
+  begin
+    btnGravarClick(Sender);
+  end;
+
+  dm.qryUltimo.Close;
+  dm.qryUltimo.SQL.Clear;
+  dm.qryUltimo.SQL.Add('SELECT MAX(COD_ITEN) AS ULTIMO FROM ITEM_VENDA');
+  dm.qryUltimo.SQL.Add('WHERE ID_VEN = :P1');
+  dm.qryUltimo.ParamByName('P1').AsInteger := dm.qryVendaID_VEN.Value;
+  dm.qryUltimo.Open;
+
+
+  dm.qryExecuta.Close;
+  dm.qryExecuta.SQL.Clear;
+  dm.qryExecuta.SQL.Add('INSERT INTO ITEM_VENDA');
+  dm.qryExecuta.SQL.Add('(ID_VEN, COD_ITEN, ID_PRO, QUANTIDADE, VLR_UNIT, TOTAL)');
+  dm.qryExecuta.SQL.Add('VALUES');
+  dm.qryExecuta.SQL.Add('(:ID_VEN, :COD_ITEN, :ID_PRO, :QUANTIDADE, :VLR_UNIT, :TOTAL)');
+  dm.qryExecuta.ParamByName('ID_VEN').AsInteger := dm.qryVendaID_VEN.Value;
+  dm.qryExecuta.ParamByName('COD_ITEN').AsInteger  :=  dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+  dm.qryExecuta.ParamByName('ID_PRO').AsString  := dbeCodPro.Text;
+  dm.qryExecuta.ParamByName('QUANTIDADE').AsFloat   := StrToFloat(edtQtPro.Text);
+  dm.qryExecuta.ParamByName('VLR_UNIT').AsFloat   := StrToFloat(edtValorProduto.Text);
+  dm.qryExecuta.ParamByName('TOTAL').AsFloat  := StrToFloat(edtValorTotal.Text);
+  dm.qryExecuta.ExecSQL;
+
+  dm.qryVenda.Edit;
+  dm.qryVendaVALOR_VEN.Value :=
+  dm.qryVendaVALOR_VEN.Value + StrToFloat(edtValorTotal.Text);
+  dm.qryVendaID_FUN.Value  := StrToInt (edtFunc.Text);
+
+  dm.qryVenda.Post;
+
+  //dm.qryVenda.Open;
+
+   dm.qryVenda.Refresh;
+  {
+  dm.qryItemVenda.Close;
+  dm.qryItemVenda.ParamByName('P1').AsInteger := dm.qryVendaID_VEN.AsInteger;
+  dm.qryItemVenda.Open();  }
+end;
+
+procedure TfrmVenda.btnNovaClick(Sender: TObject);
+begin
+  dm.qryItemVenda.Insert;
+  dbeCodCli.SetFocus;
+end;
+
+procedure TfrmVenda.btnNovoClick(Sender: TObject);
+begin
+  dm.qryVenda.Insert;
+end;
+
+procedure TfrmVenda.Button1Click(Sender: TObject);
+begin
+  frmPesqVen.showModal;
+end;
+
+procedure TfrmVenda.dbeCodCliExit(Sender: TObject);
+begin
+     if (dbeCodCli.Text <> '') then
+  begin
+    dm.qryExecuta.Close;
+    dm.qryExecuta.SQL.Clear;
+    dm.qryExecuta.SQL.Add('SELECT * FROM CLIENTE WHERE ID_CLI = :P1');
+    dm.qryExecuta.ParamByName('P1').AsString := dbeCodCli.Text;
+    dm.qryExecuta.Open;
+
+    if not(dm.qryExecuta.IsEmpty) then
+    begin
+
+      dbeCodCli.Text  := dm.qryExecuta.FieldByName('ID_CLI').AsString;
+      dbeNomeCli.Text := dm.qryExecuta.FieldByName('NOME_CLI').AsString;
+    end
+    else
+    begin
+      ShowMessage('Cliente não encontrada');
+      dbeCodCli.SetFocus;
+      dbeCodCli.Clear;
+      dbeNomeCli.Clear;
+
+end;
+  end;
+end;
+
+
+
+
+procedure TfrmVenda.Edit1Exit(Sender: TObject);
+begin
+      if (dbeCodPro.Text <> '') then
+  begin
+    dm.qryExecuta.Close;
+    dm.qryExecuta.SQL.Clear;
+    dm.qryExecuta.SQL.Add('SELECT * FROM PRODUTO WHERE ID_PRO = :P1');
+    dm.qryExecuta.ParamByName('P1').AsString := dbeCodPro.Text;
+    dm.qryExecuta.Open;
+ {
+    if (dbeCodPro.Text) <> '' then
+    dm.qryExecuta.Close;
+    dm.qryExecuta.SQL.Clear;
+    dm.qryExecuta.SQL.Add('SELECT * FROM PRODUTO WHERE COD_BARRAS = :P1');
+    dm.qryExecuta.ParamByName('P1').AsString := dbeCodPro.Text;
+    dm.qryExecuta.Open;
+}
+    if not(dm.qryExecuta.IsEmpty) then
+    begin
+
+      dbeCodPro.Text  := dm.qryExecuta.FieldByName('ID_PRO').AsString;
+      dbeNomePro.Text := dm.qryExecuta.FieldByName('NOME_PRO').AsString;
+      edtValorProduto.Text := dm.qryExecuta.FieldByName('VLR_VENDA').AsString;
+      //dbeVlrUnit.Text := dm.qryExecuta.FieldByName('VLR_VENDA').AsString;
+    end
+    else
+
+    begin
+      ShowMessage('Produto não encontrado');
+      dbeCodPro.SetFocus;
+      dbeCodPro.Clear;
+      dbeNomePro.Clear;
+
+end;
+  end;
+end;
+
+
+
+procedure TfrmVenda.edtQtProExit(Sender: TObject);
+begin
+  if (edtQtPro.Text <> '') and (edtValorProduto.Text <> '') then
+  begin
+    edtValorTotal.Text :=
+    FloatToStr( StrToFloat(edtQtPro.Text) * StrToFloat(edtValorProduto.Text));
+  end;
+end;
+
+procedure TfrmVenda.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//  dm.qryItemVenda.Close;
+end;
+
+procedure TfrmVenda.FormShow(Sender: TObject);
+begin
+  dm.qryItemVenda.Open();
+  qryPesquisa.Open();
+  dm.qryProduto.Open();
+  dm.qryVenda.Open();
+  dm.qryCliente.Open();
+end;
+
+procedure TfrmVenda.itemVendaDataChange(Sender: TObject; Field: TField);
+begin           {
+  if (dm.qryItemVenda.State in [dsInsert,dsEdit]) then
+  begin
+    btnNovo.Visible    := False;
+    btnExcluir.Visible := False;
+
+    btnCancelar.Visible:= True;
+  end
+  else
+  begin
+    btnNovo.Visible    := True;
+    btnExcluir.Visible := True;
+
+    btnCancelar.Visible:= False;
+end;                            }
+end;
+
+procedure TfrmVenda.itemVendaStateChange(Sender: TObject);
+begin
+//  edtCodigo.Text := dm.qryVendaID_VEN.AsString;
+
+  dm.qryVenda.Close;
+  dm.qryItemVenda.ParamByName('P1').AsInteger :=
+                                     dm.qryVendaID_VEN.Value;
+  dm.qryItemVenda.Open;
+end;
+
+procedure TfrmVenda.SpeedButton1Click(Sender: TObject);
+begin
+    try
+    frmPesqCliente.ShowModal;
+  finally
+    if (frmPesqCliente.vRetorno > 0) then
+    begin
+      dbeCodCli.Text := IntTostr(frmPesqCliente.vRetorno);
+       dbeCodCliExit(Sender);
+    end;
+  end;
+end;
+
+procedure TfrmVenda.SpeedButton2Click(Sender: TObject);
+begin
+  try
+    frmPesqProduto.ShowModal;
+  finally
+    if (frmPesqProduto.vRetorno > 0) then
+    begin
+      dbeCodPro.Text := IntTostr(frmPesqProduto.vRetorno);
+       //dbeCodPro(Sender);
+    end;
+  end;
+end;
+
+end.

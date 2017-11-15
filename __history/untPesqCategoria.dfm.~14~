@@ -1,0 +1,108 @@
+object frmPesqCategoria: TfrmPesqCategoria
+  Left = 0
+  Top = 0
+  Caption = 'Pesquisa de Categoria'
+  ClientHeight = 425
+  ClientWidth = 677
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 677
+    Height = 73
+    Align = alTop
+    TabOrder = 0
+    object edtpesquisa: TEdit
+      Left = 8
+      Top = 14
+      Width = 425
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 0
+      OnChange = edtpesquisaChange
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 378
+    Width = 677
+    Height = 47
+    Align = alBottom
+    TabOrder = 1
+    object btnNovo: TButton
+      Left = 24
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = 'Novo'
+      TabOrder = 0
+      OnClick = btnNovoClick
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 73
+    Width = 677
+    Height = 305
+    Align = alClient
+    DataSource = dsPesquisa
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    ReadOnly = True
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnDblClick = DBGrid1DblClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID_CAT'
+        Title.Caption = 'C'#243'digo'
+        Width = 41
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NOME_CAT'
+        Title.Caption = 'Nome'
+        Width = 426
+        Visible = True
+      end>
+  end
+  object dsPesquisa: TDataSource
+    DataSet = qryPesquisa
+    Left = 408
+    Top = 80
+  end
+  object qryPesquisa: TFDQuery
+    Connection = DM.CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM CATEGORIA')
+    Left = 408
+    Top = 136
+    object qryPesquisaID_CAT: TIntegerField
+      FieldName = 'ID_CAT'
+      Origin = 'ID_CAT'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryPesquisaNOME_CAT: TStringField
+      FieldName = 'NOME_CAT'
+      Origin = 'NOME_CAT'
+      Size = 30
+    end
+  end
+end

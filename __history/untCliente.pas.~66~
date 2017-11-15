@@ -1,0 +1,356 @@
+unit untCliente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Data.DB,
+  Vcl.Mask, Vcl.DBCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmClientes = class(TForm)
+    Label1: TLabel;
+    dsCliente: TDataSource;
+    Label2: TLabel;
+    edtNome: TDBEdit;
+    SpeedButton1: TSpeedButton;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    dbeFone: TDBEdit;
+    Label5: TLabel;
+    btnGravar: TButton;
+    btnCancelar: TButton;
+    Label7: TLabel;
+    dbeCep: TDBEdit;
+    Label8: TLabel;
+    dbeBairro: TDBEdit;
+    Label9: TLabel;
+    edtCodigo: TEdit;
+    SpeedButton2: TSpeedButton;
+    Label10: TLabel;
+    Label6: TLabel;
+    DBEdit2: TDBEdit;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Label11: TLabel;
+    Label12: TLabel;
+    DBEdit4: TDBEdit;
+    Label13: TLabel;
+    rgSituacao: TDBRadioGroup;
+    dbeCodCidade: TDBEdit;
+    dbeNomeCidade: TDBEdit;
+    dbeUF: TDBEdit;
+    cbSexo: TComboBox;
+    btnNovo: TButton;
+    DBEdit1: TDBEdit;
+    btnCpf: TButton;
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure dsClienteStateChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure edtCodigoExit(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure dsClienteDataChange(Sender: TObject; Field: TField);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure dbeCodCidadeExit(Sender: TObject);
+    procedure cbSexoChange(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
+    procedure dbeCodCidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBEdit1KeyPress(Sender: TObject; var Key: Char);
+    procedure dbeCepKeyPress(Sender: TObject; var Key: Char);
+    procedure dbeFoneKeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit2KeyPress(Sender: TObject; var Key: Char);
+    procedure btnCpfClick(Sender: TObject);
+  private
+    { Private declarations }
+   function ValidaCPF(num: string): boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmClientes: TfrmClientes;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM, untPescCliente, untPescCidade;
+
+procedure TfrmClientes.btnCancelarClick(Sender: TObject);
+begin
+  dm.qryCliente.Cancel;
+end;
+
+procedure TfrmClientes.btnCpfClick(Sender: TObject);
+begin
+  if(ValidaCPF(DBEdit1.Text))then
+  begin
+    ShowMessage('Cpf-valido');
+  end
+  else
+  begin
+    ShowMessage('Cpf-invalido-');
+
+  end;
+end;
+
+procedure TfrmClientes.btnExcluirClick(Sender: TObject);
+begin
+  dm.qryCliente.Delete;
+end;
+
+procedure TfrmClientes.cbSexoChange(Sender: TObject);
+begin
+    dm.qryCliente.Edit;
+    dm.qryClienteSEXO.AsInteger := cbSexo.ItemIndex;
+    dm.qryCliente.Post;
+
+end;
+
+procedure TfrmClientes.dbeCepKeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmClientes.dbeCodCidadeExit(Sender: TObject);
+begin
+   if (dbeCodCidade.Text <> '') then
+  begin
+    dm.qryExecuta.Close;
+    dm.qryExecuta.SQL.Clear;
+    dm.qryExecuta.SQL.Add('SELECT * FROM CIDADE WHERE COD_CIDADE = :P1');
+    dm.qryExecuta.ParamByName('P1').AsString := dbeCodCidade.Text;
+    dm.qryExecuta.Open;
+
+    if not(dm.qryExecuta.IsEmpty) then
+    begin
+
+      dbeNomeCidade.Text := dm.qryExecuta.FieldByName('NOME_CIDADE').AsString;
+      dbeUF.Text         := dm.qryExecuta.FieldByName('UF_CIDADE').AsString;
+    end
+    else
+    begin
+      ShowMessage('Cidade não encontrada');
+      dbeCodCidade.SetFocus;
+      dbeCodCidade.Clear;
+      dbeNomeCidade.Clear;
+      dbeUF.Clear;
+    end;
+  end;
+end;
+
+procedure TfrmClientes.dbeCodCidadeKeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmClientes.DBEdit1KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmClientes.DBEdit2KeyPress(Sender: TObject; var Key: Char);
+begin
+  if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmClientes.edtCodigoExit(Sender: TObject);
+begin
+    if (edtCodigo.Text <> '') then
+  begin
+    dm.qryCliente.Close;
+    dm.qryCliente.ParamByName('P1').AsString :=
+                                edtCodigo.Text;
+    dm.qryCliente.Open;
+
+    if (dm.qryCliente.IsEmpty) then
+    begin
+      ShowMessage('Código não encontrado.');
+      edtCodigo.SetFocus;
+      edtCodigo.Clear;
+    end
+    else
+    begin
+   cbSexo.ItemIndex := dm.qryClienteSEXO.AsInteger;
+    end;
+  end;
+end;
+
+procedure TfrmClientes.edtCodigoKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmClientes.btnGravarClick(Sender: TObject);
+begin
+if (trim(dbeCodCidade.Text) = '') then
+  begin
+    ShowMessage('Informe a cidade');
+    dbeCodCidade.SetFocus;
+    exit; // para a procedure nesse ponto
+  end;
+
+  if (dm.qryCliente.State = dsInsert) then
+  begin
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_CLI) AS ULTIMO FROM CLIENTE');
+    dm.qryUltimo.Open;
+
+    dm.qryClienteID_CLI.AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+  end;
+
+  dm.qryCliente.Post;
+end;
+
+procedure TfrmClientes.dbeFoneKeyPress(Sender: TObject; var Key: Char);
+begin
+     if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmClientes.dsClienteDataChange(Sender: TObject; Field: TField);
+begin
+   edtCodigo.Text := dm.qryClienteID_cli.AsString;
+end;
+
+procedure TfrmClientes.dsClienteStateChange(Sender: TObject);
+begin
+    if (dm.qryCliente.State in [dsInsert,dsEdit]) then
+  begin
+    btnNovo.Visible    := False;
+
+    btnGravar.Visible  := True;
+    btnCancelar.Visible:= True;
+  end
+  else
+  begin
+    btnNovo.Visible    := True;
+
+    btnGravar.Visible  := False;
+    btnCancelar.Visible:= False;
+  end;
+end;
+
+procedure TfrmClientes.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dm.qrycliente.close;
+end;
+
+procedure TfrmClientes.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  If Key = VK_F2 Then
+  begin
+  btnNovoClick(Sender);
+  end;
+  IF Key = Vk_Escape then frmClientes.Close;
+end;
+
+procedure TfrmClientes.FormShow(Sender: TObject);
+begin
+  dm.qryCliente.Open();
+  rgSituacao.ItemIndex:= 0;
+end;
+
+procedure TfrmClientes.btnNovoClick(Sender: TObject);
+begin
+  dm.qryCliente.Insert;
+  edtNome.SetFocus;
+
+end;
+
+procedure TfrmClientes.SpeedButton1Click(Sender: TObject);
+begin
+  try
+    frmPesqCliente.ShowModal;
+  finally
+    if (frmPesqCliente.vRetorno > 0) then
+    begin
+      edtCodigo.Text := IntTostr(frmPesqCliente.vRetorno);
+      edtCodigoExit(Sender);
+    end;
+  end;
+
+end;
+
+procedure TfrmClientes.SpeedButton2Click(Sender: TObject);
+begin
+    try
+    frmPesqCidade.ShowModal;
+  finally
+    if (frmPesqCidade.vRetorno > 0) then
+    begin
+      dbeCodCidade.Text := IntTostr(frmPesqCidade.vRetorno);
+      dbeCodCidadeExit(Sender);
+    end;
+  end;
+
+end;
+
+
+function TfrmClientes.ValidaCPF(num: string): boolean;
+var
+n1,n2,n3,n4,n5,n6,n7,n8,n9: integer;
+d1,d2: integer;
+digitado, calculado: string;
+begin
+  if (Length(num)<>11) then
+    begin
+      Result:=False;
+    end
+  else
+    begin
+      n1:=StrToInt(num[1]);
+      n2:=StrToInt(num[2]);
+      n3:=StrToInt(num[3]);
+      n4:=StrToInt(num[4]);
+      n5:=StrToInt(num[5]);
+      n6:=StrToInt(num[6]);
+      n7:=StrToInt(num[7]);
+      n8:=StrToInt(num[8]);
+      n9:=StrToInt(num[9]);
+      d1:=n9*2+n8*3+n7*4+n6*5+n5*6+n4*7+n3*8+n2*9+n1*10;
+      d1:=11-(d1 mod 11);
+      if d1>=10 then d1:=0;
+      d2:=d1*2+n9*3+n8*4+n7*5+n6*6+n5*7+n4*8+n3*9+n2*10+n1*11;
+      d2:=11-(d2 mod 11);
+      if d2>=10 then d2:=0;
+      calculado:=inttostr(d1)+inttostr(d2);
+      digitado:=num[10]+num[11];
+      if calculado=digitado then
+        Result :=true
+        else
+        Result :=false;
+    end;
+end;
+
+end.

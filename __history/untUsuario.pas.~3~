@@ -1,0 +1,77 @@
+unit untUsuario;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.DBCtrls, Data.DB;
+
+type
+  TfrmUsuario = class(TForm)
+    Label1: TLabel;
+    dsUsuario: TDataSource;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    Senha: TLabel;
+    dbSenha: TDBEdit;
+    btnNovo: TButton;
+    edtCodigo: TEdit;
+    btnExcluir: TButton;
+    btnSalvar: TButton;
+    btnCancelar: TButton;
+    SpeedButton1: TSpeedButton;
+    edtConfirmarSenha: TEdit;
+    Label3: TLabel;
+    procedure btnNovoClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUsuario: TfrmUsuario;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM;
+
+procedure TfrmUsuario.btnCancelarClick(Sender: TObject);
+begin
+  dm.qryUsuario.Cancel;
+end;
+
+procedure TfrmUsuario.btnExcluirClick(Sender: TObject);
+begin
+  dm.qryUsuario.Delete;
+end;
+
+procedure TfrmUsuario.btnNovoClick(Sender: TObject);
+begin
+  dm.qryUsuario.Insert;
+end;
+
+procedure TfrmUsuario.btnSalvarClick(Sender: TObject);
+begin
+
+  if (dbSenha.Text <> edtConfirmarSenha.Text) then
+    begin
+      ShowMessage('Senhas não comferem.');
+      dbSenha.SetFocus;
+      edtConfirmarSenha.Clear;
+      exit;
+end;
+
+procedure TfrmUsuario.FormShow(Sender: TObject);
+begin
+  dm.qryUsuario.Open();
+end;
+
+end.

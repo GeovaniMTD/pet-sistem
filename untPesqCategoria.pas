@@ -1,0 +1,103 @@
+unit untPesqCategoria;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vcl.ExtCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.DBCtrls;
+
+type
+  TfrmPesqCategoria = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    DBGrid1: TDBGrid;
+    dsPesquisa: TDataSource;
+    edtpesquisa: TEdit;
+    qryPesquisa: TFDQuery;
+    btnNovo: TButton;
+    qryPesquisaID_CAT: TIntegerField;
+    qryPesquisaNOME_CAT: TStringField;
+    btnEditar: TButton;
+    procedure FormShow(Sender: TObject);
+    procedure edtpesquisaChange(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure btnEditarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    vRetorno: integer;
+    vRetorno2: string;
+    vRetorno3: string;
+  end;
+
+var
+  frmPesqCategoria: TfrmPesqCategoria;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM, untCategoria, untCadCat;
+
+procedure TfrmPesqCategoria.btnEditarClick(Sender: TObject);
+begin
+  vRetorno2:=dbgrid1.columns.items[0].field.text;
+  vRetorno3:= '';
+  frmCadCat.ShowModal;
+
+end;
+
+procedure TfrmPesqCategoria.btnNovoClick(Sender: TObject);
+begin
+  frmCadCat.ShowModal;
+ // frmCadCat =: edtcod.clear;
+
+end;
+
+procedure TfrmPesqCategoria.DBGrid1DblClick(Sender: TObject);
+begin
+  vRetorno := qryPesquisaID_CAT.Value;
+  Close;
+end;
+
+procedure TfrmPesqCategoria.edtpesquisaChange(Sender: TObject);
+begin
+   if (edtPesquisa.Text <> '') then
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CATEGORIA');
+    qryPesquisa.SQL.Add('WHERE NOME_CAT LIKE :P1');
+    qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtPesquisa.Text + '%';
+    qryPesquisa.Open;
+  end
+  else
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CATEGORIA');
+    qryPesquisa.Open;
+  end;
+end;
+
+procedure TfrmPesqCategoria.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  IF Key = Vk_Escape then frmPesqCategoria.Close;
+end;
+
+procedure TfrmPesqCategoria.FormShow(Sender: TObject);
+begin
+  qryPesquisa.Open();
+  vRetorno := 0;
+end;
+
+end.

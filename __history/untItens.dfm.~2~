@@ -1,0 +1,85 @@
+object frmItensVenda: TfrmItensVenda
+  Left = 0
+  Top = 0
+  Caption = 'Itens Venda'
+  ClientHeight = 392
+  ClientWidth = 666
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 666
+    Height = 57
+    Align = alTop
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 6
+      Top = 4
+      Width = 65
+      Height = 13
+      Caption = 'Pesquisar por'
+    end
+    object edtPesqItens: TEdit
+      Left = 140
+      Top = 23
+      Width = 513
+      Height = 21
+      TabOrder = 0
+    end
+    object cbSexo: TComboBox
+      Left = 6
+      Top = 23
+      Width = 115
+      Height = 21
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 1
+      Text = 'Nome'
+      Items.Strings = (
+        'Nome'
+        'Categoria')
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 336
+    Width = 666
+    Height = 56
+    Align = alBottom
+    TabOrder = 1
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 57
+    Width = 666
+    Height = 279
+    Align = alClient
+    DataSource = dsItems
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object dsItems: TDataSource
+    DataSet = qryItens
+    Left = 576
+    Top = 280
+  end
+  object qryItens: TFDQuery
+    Connection = DM.CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM PRODUTO')
+    Left = 576
+    Top = 216
+  end
+end

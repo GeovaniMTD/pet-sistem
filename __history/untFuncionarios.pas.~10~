@@ -1,0 +1,154 @@
+unit untFuncionarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls,
+  Vcl.Mask, Vcl.DBCtrls, Vcl.Buttons;
+
+type
+  TfrmFuncionarios = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    btnCancelar: TButton;
+    btnGravar: TButton;
+    btnNovo: TButton;
+    SpeedButton1: TSpeedButton;
+    Label1: TLabel;
+    dsFuncionario: TDataSource;
+    Label2: TLabel;
+    dbeNome: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    DBEdit4: TDBEdit;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Label7: TLabel;
+    DBEdit2: TDBEdit;
+    Label8: TLabel;
+    DBEdit7: TDBEdit;
+    edtComSenha: TEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    DBEdit6: TDBEdit;
+    Label6: TLabel;
+    DBEdit8: TDBEdit;
+    Label11: TLabel;
+    DBEdit9: TDBEdit;
+    Label12: TLabel;
+    DBEdit10: TDBEdit;
+    rgSituacao: TDBRadioGroup;
+    edtCodigo: TEdit;
+    Label13: TLabel;
+    DBEdit1: TDBEdit;
+    Label14: TLabel;
+    DBEdit11: TDBEdit;
+    Label15: TLabel;
+    DBEdit12: TDBEdit;
+    procedure dsFuncionarioStateChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edtCodigoExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFuncionarios: TfrmFuncionarios;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM;
+
+procedure TfrmFuncionarios.btnCancelarClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Cancel;
+end;
+
+procedure TfrmFuncionarios.btnExcluirClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Delete;
+end;
+
+procedure TfrmFuncionarios.btnGravarClick(Sender: TObject);
+begin
+
+  if (dm.qryFuncionario.State = dsInsert) then
+  begin
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_FUN) AS ULTIMO FROM FUNCIONARIO');
+    dm.qryUltimo.Open;
+
+    dm.qryFUNCIONARIOID_FUN.AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+  end;
+
+  dm.qryFuncionario.Post;
+end;
+
+procedure TfrmFuncionarios.btnNovoClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Insert;
+  dbeNome.SetFocus;
+end;
+
+procedure TfrmFuncionarios.dsFuncionarioStateChange(Sender: TObject);
+begin
+  if (dm.qryFuncionario.State in [dsInsert,dsEdit]) then
+  begin
+    btnNovo.Visible    := False;
+
+    btnGravar.Visible  := True;
+    btnCancelar.Visible:= True;
+  end
+  else
+  begin
+    btnNovo.Visible    := True;
+
+    btnGravar.Visible  := False;
+    btnCancelar.Visible:= False;
+  end;
+end;
+
+procedure TfrmFuncionarios.edtCodigoExit(Sender: TObject);
+begin
+   if (edtCodigo.Text <> '') then
+  begin
+    dm.qryFuncionario.Close;
+    dm.qryFuncionario.ParamByName('P1').AsString :=
+                                edtCodigo.Text;
+    dm.qryFuncionario.Open;
+
+    if (dm.qryFuncionario.IsEmpty) then
+    begin
+      ShowMessage('Código não encontrado.');
+      edtCodigo.SetFocus;
+      edtCodigo.Clear;
+
+    end;
+  end;
+end;
+
+procedure TfrmFuncionarios.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dm.qryFuncionario.Close;
+end;
+
+procedure TfrmFuncionarios.FormShow(Sender: TObject);
+begin
+  dm.qryFuncionario.Open();
+  rgSituacao.ItemIndex:= 1;
+end;
+
+end.

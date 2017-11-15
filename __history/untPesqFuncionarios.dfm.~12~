@@ -1,0 +1,185 @@
+object frmPesqFuncionarios: TfrmPesqFuncionarios
+  Left = 0
+  Top = 0
+  Caption = 'Cadastro de Funcionarios'
+  ClientHeight = 468
+  ClientWidth = 712
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 712
+    Height = 49
+    Align = alTop
+    TabOrder = 0
+    ExplicitTop = -24
+    object edtNome: TEdit
+      Left = 128
+      Top = 15
+      Width = 441
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 0
+      OnChange = edtNomeChange
+    end
+    object cbCampoPesq: TComboBox
+      Left = 13
+      Top = 15
+      Width = 100
+      Height = 21
+      ItemIndex = 0
+      TabOrder = 1
+      Text = 'Nome'
+      OnChange = cbCampoPesqChange
+      Items.Strings = (
+        'Nome'
+        'Endere'#231'o'
+        'Data De Nascimento')
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 49
+    Width = 712
+    Height = 419
+    Align = alClient
+    DataSource = dsPesquisa
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    ReadOnly = True
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID_FUN'
+        Title.Caption = 'C'#243'digo'
+        Width = 52
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NOME_FUN'
+        Title.Caption = 'Nome'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'END_FUN'
+        Title.Caption = 'Endere'#231'o'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CPF_FUN'
+        Title.Caption = 'CPF'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'FONE_FUN'
+        Title.Caption = 'Telefone'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SITUACAO'
+        Title.Caption = 'Situa'#231#227'o'
+        Visible = True
+      end>
+  end
+  object dsPesquisa: TDataSource
+    DataSet = qryPesquisa
+    Left = 616
+    Top = 96
+  end
+  object qryPesquisa: TFDQuery
+    Connection = DM.CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM FUNCIONARIO'
+      'where 1=1')
+    Left = 608
+    Top = 152
+    object qryPesquisaID_FUN: TIntegerField
+      FieldName = 'ID_FUN'
+      Origin = 'ID_FUN'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryPesquisaNOME_FUN: TStringField
+      FieldName = 'NOME_FUN'
+      Origin = 'NOME_FUN'
+      Size = 30
+    end
+    object qryPesquisaEND_FUN: TStringField
+      FieldName = 'END_FUN'
+      Origin = 'END_FUN'
+    end
+    object qryPesquisaCPF_FUN: TStringField
+      FieldName = 'CPF_FUN'
+      Origin = 'CPF_FUN'
+    end
+    object qryPesquisaFONE_FUN: TStringField
+      FieldName = 'FONE_FUN'
+      Origin = 'FONE_FUN'
+    end
+    object qryPesquisaDATA_NASIMENTO_FUN: TDateField
+      FieldName = 'DATA_NASIMENTO_FUN'
+      Origin = 'DATA_NASIMENTO_FUN'
+    end
+    object qryPesquisaLOGIN_FUN: TStringField
+      FieldName = 'LOGIN_FUN'
+      Origin = 'LOGIN_FUN'
+      Size = 25
+    end
+    object qryPesquisaSENHA_FUN: TStringField
+      FieldName = 'SENHA_FUN'
+      Origin = 'SENHA_FUN'
+      Size = 25
+    end
+    object qryPesquisaSITUACAO: TIntegerField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+    end
+    object qryPesquisaBAIRRO_FUN: TStringField
+      FieldName = 'BAIRRO_FUN'
+      Origin = 'BAIRRO_FUN'
+      Size = 15
+    end
+    object qryPesquisaCEP_FUN: TStringField
+      FieldName = 'CEP_FUN'
+      Origin = 'CEP_FUN'
+      Size = 15
+    end
+    object qryPesquisaDATA_ADMISSAO_FUN: TDateField
+      FieldName = 'DATA_ADMISSAO_FUN'
+      Origin = 'DATA_ADMISSAO_FUN'
+    end
+    object qryPesquisaDATA_DEMISSAO_FUN: TDateField
+      FieldName = 'DATA_DEMISSAO_FUN'
+      Origin = 'DATA_DEMISSAO_FUN'
+    end
+    object qryPesquisaCARGO_FUN: TStringField
+      FieldName = 'CARGO_FUN'
+      Origin = 'CARGO_FUN'
+      Size = 15
+    end
+    object qryPesquisaNUMERO_END_FUN: TStringField
+      FieldName = 'NUMERO_END_FUN'
+      Origin = 'NUMERO_END_FUN'
+      Size = 10
+    end
+  end
+end

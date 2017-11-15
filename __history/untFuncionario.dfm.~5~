@@ -1,0 +1,141 @@
+object frmFuncionario: TfrmFuncionario
+  Left = 0
+  Top = 0
+  Caption = 'frmFuncionario'
+  ClientHeight = 430
+  ClientWidth = 629
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 8
+    Width = 37
+    Height = 13
+    Caption = 'ID_FUN'
+    FocusControl = DBEdit1
+  end
+  object Label2: TLabel
+    Left = 8
+    Top = 48
+    Width = 55
+    Height = 13
+    Caption = 'NOME_FUN'
+    FocusControl = DBEdit2
+  end
+  object Label3: TLabel
+    Left = 8
+    Top = 88
+    Width = 46
+    Height = 13
+    Caption = 'END_FUN'
+    FocusControl = DBEdit3
+  end
+  object Label4: TLabel
+    Left = 8
+    Top = 128
+    Width = 40
+    Height = 13
+    Caption = 'RG_FUN'
+    FocusControl = DBEdit4
+  end
+  object Label5: TLabel
+    Left = 8
+    Top = 168
+    Width = 43
+    Height = 13
+    Caption = 'TEL_FUN'
+    FocusControl = DBEdit5
+  end
+  object Label6: TLabel
+    Left = 8
+    Top = 208
+    Width = 49
+    Height = 13
+    Caption = 'TEL2_FUN'
+    FocusControl = DBEdit6
+  end
+  object Label7: TLabel
+    Left = 8
+    Top = 248
+    Width = 118
+    Height = 13
+    Caption = 'DATA_NASIMENTO_FUN'
+    FocusControl = DBEdit7
+  end
+  object DBEdit1: TDBEdit
+    Left = 8
+    Top = 21
+    Width = 134
+    Height = 21
+    DataField = 'ID_FUN'
+    DataSource = DataSource1
+    TabOrder = 0
+  end
+  object DBEdit2: TDBEdit
+    Left = 8
+    Top = 64
+    Width = 394
+    Height = 21
+    DataField = 'NOME_FUN'
+    DataSource = DataSource1
+    TabOrder = 1
+  end
+  object DBEdit3: TDBEdit
+    Left = 8
+    Top = 104
+    Width = 264
+    Height = 21
+    DataField = 'END_FUN'
+    DataSource = DataSource1
+    TabOrder = 2
+  end
+  object DBEdit4: TDBEdit
+    Left = 8
+    Top = 144
+    Width = 264
+    Height = 21
+    DataField = 'RG_FUN'
+    DataSource = DataSource1
+    TabOrder = 3
+  end
+  object DBEdit5: TDBEdit
+    Left = 8
+    Top = 184
+    Width = 264
+    Height = 21
+    DataField = 'TEL_FUN'
+    DataSource = DataSource1
+    TabOrder = 4
+  end
+  object DBEdit6: TDBEdit
+    Left = 8
+    Top = 224
+    Width = 264
+    Height = 21
+    DataField = 'TEL2_FUN'
+    DataSource = DataSource1
+    TabOrder = 5
+  end
+  object DBEdit7: TDBEdit
+    Left = 8
+    Top = 264
+    Width = 134
+    Height = 21
+    DataField = 'DATA_NASIMENTO_FUN'
+    DataSource = DataSource1
+    TabOrder = 6
+  end
+  object DataSource1: TDataSource
+    DataSet = DM.qryFuncionario
+    Left = 504
+    Top = 24
+  end
+end

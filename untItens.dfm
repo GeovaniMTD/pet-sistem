@@ -1,0 +1,172 @@
+object frmItensVenda: TfrmItensVenda
+  Left = 0
+  Top = 0
+  Caption = 'Itens Venda'
+  ClientHeight = 468
+  ClientWidth = 715
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 715
+    Height = 57
+    Align = alTop
+    TabOrder = 0
+    ExplicitLeft = -8
+    ExplicitTop = -32
+    ExplicitWidth = 701
+    object Label1: TLabel
+      Left = 6
+      Top = 4
+      Width = 65
+      Height = 13
+      Caption = 'Pesquisar por'
+    end
+    object edtPesqItens: TEdit
+      Left = 140
+      Top = 23
+      Width = 513
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 0
+      OnChange = edtPesqItensChange
+    end
+    object cbCampoPesq: TComboBox
+      Left = 6
+      Top = 23
+      Width = 115
+      Height = 21
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 1
+      Text = 'Nome'
+      Items.Strings = (
+        'Nome'
+        'C'#243'd Barras')
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 412
+    Width = 715
+    Height = 56
+    Align = alBottom
+    TabOrder = 1
+    ExplicitTop = 336
+    ExplicitWidth = 666
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 57
+    Width = 715
+    Height = 355
+    Align = alClient
+    DataSource = dsItems
+    ReadOnly = True
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID_PRO'
+        Title.Caption = 'C'#243'digo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NOME_PRO'
+        Title.Caption = 'Nome'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'QTDE_PRO'
+        Title.Caption = 'Quantidade'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'VLR_CUSTO'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'VLR_VENDA'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'COD_BARRAS'
+        Title.Caption = 'C'#243'digo de barras'
+        Width = 118
+        Visible = True
+      end>
+  end
+  object dsItems: TDataSource
+    DataSet = qryItens
+    Left = 576
+    Top = 280
+  end
+  object qryItens: TFDQuery
+    Connection = DM.CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM PRODUTO')
+    Left = 576
+    Top = 216
+    object qryItensID_PRO: TIntegerField
+      FieldName = 'ID_PRO'
+      Origin = 'ID_PRO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryItensNOME_PRO: TStringField
+      FieldName = 'NOME_PRO'
+      Origin = 'NOME_PRO'
+      Required = True
+      Size = 40
+    end
+    object qryItensQTDE_PRO: TBCDField
+      FieldName = 'QTDE_PRO'
+      Origin = 'QTDE_PRO'
+      Precision = 18
+      Size = 2
+    end
+    object qryItensVLR_CUSTO: TFloatField
+      FieldName = 'VLR_CUSTO'
+      Origin = 'VLR_CUSTO'
+    end
+    object qryItensVLR_VENDA: TFloatField
+      FieldName = 'VLR_VENDA'
+      Origin = 'VLR_VENDA'
+      Required = True
+    end
+    object qryItensCOD_BARRAS: TStringField
+      FieldName = 'COD_BARRAS'
+      Origin = 'COD_BARRAS'
+      Size = 30
+    end
+    object qryItensID_CAT: TIntegerField
+      FieldName = 'ID_CAT'
+      Origin = 'ID_CAT'
+    end
+    object qryItensSITUACAO: TIntegerField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+    end
+  end
+end

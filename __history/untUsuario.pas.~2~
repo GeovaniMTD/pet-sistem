@@ -1,0 +1,41 @@
+unit untUsuario;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.DBCtrls, Data.DB;
+
+type
+  TfrmUsuario = class(TForm)
+    Label1: TLabel;
+    DataSource1: TDataSource;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    Senha: TLabel;
+    DBEdit3: TDBEdit;
+    btnNovo: TButton;
+    Edit1: TEdit;
+    btnExcluir: TButton;
+    btnSalvar: TButton;
+    btnCancelar: TButton;
+    SpeedButton1: TSpeedButton;
+    Edit2: TEdit;
+    Label3: TLabel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUsuario: TfrmUsuario;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM;
+
+end.

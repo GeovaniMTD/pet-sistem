@@ -1,0 +1,109 @@
+unit untUsuario;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.DBCtrls, Data.DB;
+
+type
+  TfrmUsuario = class(TForm)
+    Label1: TLabel;
+    dsUsuario: TDataSource;
+    Label2: TLabel;
+    dbLogin: TDBEdit;
+    Senha: TLabel;
+    dbSenha: TDBEdit;
+    btnNovo: TButton;
+    edtCodigo: TEdit;
+    btnExcluir: TButton;
+    btnSalvar: TButton;
+    btnCancelar: TButton;
+    SpeedButton1: TSpeedButton;
+    edtConfirmarSenha: TEdit;
+    Label3: TLabel;
+    procedure btnNovoClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUsuario: TfrmUsuario;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM, untFuncoes;
+
+procedure TfrmUsuario.btnCancelarClick(Sender: TObject);
+begin
+  dm.qryUsuario.Cancel;
+end;
+
+procedure TfrmUsuario.btnExcluirClick(Sender: TObject);
+begin
+  dm.qryUsuario.Delete;
+end;
+
+procedure TfrmUsuario.btnNovoClick(Sender: TObject);
+begin
+  dm.qryUsuario.Insert;
+end;
+
+procedure TfrmUsuario.btnSalvarClick(Sender: TObject);
+begin
+
+  if (dbSenha.Text <> edtConfirmarSenha.Text) then
+    begin
+      ShowMessage('Senhas não comferem.');
+      dbSenha.SetFocus;
+      edtConfirmarSenha.Clear;
+      exit;
+    end;
+
+  if (dm.qryFuncionario.State = dsInsert) then
+  begin
+    dm.qryExecuta.Close;
+    dm.qryExecuta.SQL.Clear;
+    dm.qryExecuta.SQL.Add('SELECT * FROM FUNCIONARIO');
+    dm.qryExecuta.SQL.Add('WHERE LOGIN_FUN = :LOGIN_FUN');
+    dm.qryExecuta.ParamByName('LOGIN_FUN').Text := dbLogin.Text;
+    dm.qryExecuta.Open;
+
+     if not (dm.qryExecuta.IsEmpty) then
+    begin
+      ShowMessage('Login já esta em uso.');
+      dbLogin.SetFocus;
+      exit;
+    end;
+
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_FUN) AS ULTIMO FROM FUNCIONARIO');
+    dm.qryUltimo.Open;
+
+    dm.qryFuncionarioID_FUN.AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+
+    edtCodigo.Text :=
+                    dm.qryUsuarioID_FUN.AsString;
+    dm.qryUsuarioSENHA_FUN.AsString := Criptografar(dbSenha.Text);
+  end
+  else
+  end;
+  end;
+
+procedure TfrmUsuario.FormShow(Sender: TObject);
+begin
+  dm.qryUsuario.Open();
+end;
+
+end.

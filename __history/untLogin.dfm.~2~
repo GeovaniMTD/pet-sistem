@@ -1,0 +1,37 @@
+object frmLogin: TfrmLogin
+  Left = 0
+  Top = 0
+  Caption = 'frmLogin'
+  ClientHeight = 401
+  ClientWidth = 696
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 120
+    Top = 17
+    Width = 31
+    Height = 17
+    Caption = 'Label1'
+  end
+  object edtLogin: TEdit
+    Left = 120
+    Top = 40
+    Width = 177
+    Height = 21
+    TabOrder = 0
+  end
+  object edtSenha: TEdit
+    Left = 120
+    Top = 80
+    Width = 177
+    Height = 21
+    TabOrder = 1
+  end
+end

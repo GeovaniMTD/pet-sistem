@@ -1,0 +1,459 @@
+object frmVenda: TfrmVenda
+  Left = 0
+  Top = 0
+  Caption = 'Venda'
+  ClientHeight = 514
+  ClientWidth = 669
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 669
+    Height = 49
+    Align = alTop
+    TabOrder = 0
+    object SpeedButton1: TSpeedButton
+      Left = 104
+      Top = 14
+      Width = 23
+      Height = 22
+      Glyph.Data = {
+        36050000424D3605000000000000360400002800000010000000100000000100
+        08000000000000010000120B0000120B000000010000450000002C2B2B00F1F1
+        F100CFCFCF00B4B4B300999999007E7F80005D5C5C00DDDDDC00CCCCCC004C4A
+        4A00B1B1B100FFFFFF007A7A7A00E5E5E500AFAFAF00BFBFBF0087878800D4D4
+        D300F7F7F700EBECEB0092929200C6C6C40058575700B9B9B800DFDFDF00A39D
+        9C00948D8C00D8D8D70084848300302F3000F5F5F500E9E9E90064636300C7C3
+        C200EFEFEF009D9D9C00E1E1E1007E7E7D00FBFBFB00BDBABA00D2D2D100CFCF
+        CD00CACBC90082828200DBDBD9002E2E2E004F4F4F008686860033333300B3B3
+        B2009F9F9F00EDEDEC00E3E3E300F9F9F900827F7D00D7D7D500959595008585
+        8500BDBDBD00D3D3D100B3B3B300D9D9D900B5B5B500E3E1E100EBEDEB00D5D5
+        D500313031008587850000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000000000000B0B0B0B0B0B
+        0B0B0B0B1F0F392E0C0B0B0B0B0B0B0B0B261F023E32380042380B0B0B0B0B0B
+        0B2601221E0B204210180B0B0B0B0B0B0B0B0B0B0B061D2B350B0B0B0B0B0B0B
+        0B0B0B0B161D2B120B0B0B0B0B0B261E0B0B0B190905120B0B0B0B0B2431173A
+        312A211A27120B0B0B0B0B3D0E241F1F1F2936080B0B0B0B0B0B1F0A0D2C1B1B
+        1B2408080B0B0B0B0B0B23153728283B3B3B2C310B0B0B0B0B0B250829292929
+        29291103010B0B0B0B0B1C2A2828282828281B311E0B0B0B0B0B170F0D070707
+        0718070A0B0B0B0B0B0B0B03071E3313011E0E180B0B0B0B0B0B0B1231081F22
+        0731110B0B0B0B0B0B0B0B0B0B0E2F3914240B0B0B0B0B0B0B0B}
+      OnClick = SpeedButton1Click
+    end
+    object Label1: TLabel
+      Left = 6
+      Top = 1
+      Width = 33
+      Height = 13
+      Caption = 'C'#243'digo'
+    end
+    object Label3: TLabel
+      Left = 146
+      Top = 1
+      Width = 33
+      Height = 13
+      Caption = 'Cliente'
+    end
+    object dbeNomeCli: TDBEdit
+      Left = 146
+      Top = 15
+      Width = 458
+      Height = 21
+      DataField = 'NOME_CLI'
+      Enabled = False
+      TabOrder = 1
+    end
+    object dbeCodCli: TDBEdit
+      Left = 6
+      Top = 15
+      Width = 89
+      Height = 21
+      DataField = 'ID_CLI'
+      DataSource = dsVenda
+      TabOrder = 0
+      OnExit = dbeCodCliExit
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 467
+    Width = 669
+    Height = 47
+    Align = alBottom
+    TabOrder = 3
+    object Label8: TLabel
+      Left = 10
+      Top = 16
+      Width = 61
+      Height = 18
+      Caption = 'Operador'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMenuHighlight
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 519
+      Top = 1
+      Width = 51
+      Height = 13
+      Caption = 'Valor Total'
+    end
+    object btnCancelar: TButton
+      Left = 237
+      Top = 14
+      Width = 75
+      Height = 25
+      Caption = 'Cancelar'
+      TabOrder = 0
+    end
+    object edtTotal: TEdit
+      Left = 520
+      Top = 16
+      Width = 121
+      Height = 21
+      Enabled = False
+      TabOrder = 1
+    end
+    object edtFunc: TEdit
+      Left = 77
+      Top = 16
+      Width = 68
+      Height = 21
+      Enabled = False
+      TabOrder = 2
+      Text = '1'
+    end
+    object btnNovo: TButton
+      Left = 155
+      Top = 14
+      Width = 75
+      Height = 25
+      Caption = 'Novo'
+      TabOrder = 3
+      OnClick = btnNovoClick
+    end
+    object btnExcluir: TButton
+      Left = 318
+      Top = 14
+      Width = 75
+      Height = 25
+      Caption = 'Excluir'
+      TabOrder = 4
+      OnClick = btnExcluirClick
+    end
+    object btnGravar: TButton
+      Left = 399
+      Top = 15
+      Width = 75
+      Height = 25
+      Caption = 'Gravar'
+      TabOrder = 5
+      OnClick = btnGravarClick
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 113
+    Top = 98
+    Width = 556
+    Height = 369
+    Align = alClient
+    DataSource = itemVenda
+    TabOrder = 4
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID_VEN'
+        Title.Caption = 'C'#243'digo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NOME_PRO'
+        Title.Caption = 'Produto'
+        Width = 339
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'QUANTIDADE'
+        Title.Caption = 'Quantidade'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'TOTAL'
+        Title.Caption = 'Total'
+        Visible = True
+      end>
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 98
+    Width = 113
+    Height = 369
+    Align = alLeft
+    TabOrder = 2
+    object Label5: TLabel
+      Left = 10
+      Top = 321
+      Width = 45
+      Height = 13
+      Caption = 'Sub Total'
+    end
+    object Label9: TLabel
+      Left = 9
+      Top = 96
+      Width = 66
+      Height = 13
+      Caption = 'QUANTIDADE'
+    end
+    object Label11: TLabel
+      Left = 10
+      Top = 159
+      Width = 64
+      Height = 13
+      Caption = 'Valor Unitario'
+    end
+    object btnLancar: TButton
+      Left = 6
+      Top = 250
+      Width = 75
+      Height = 25
+      Caption = 'Lan'#231'ar'
+      TabOrder = 3
+      OnClick = btnLancarClick
+    end
+    object edtQtPro: TEdit
+      Left = 9
+      Top = 115
+      Width = 78
+      Height = 21
+      TabOrder = 0
+      OnExit = edtQtProExit
+    end
+    object edtValorProduto: TEdit
+      Left = 10
+      Top = 187
+      Width = 83
+      Height = 21
+      Ctl3D = True
+      Enabled = False
+      ParentCtl3D = False
+      TabOrder = 1
+    end
+    object edtValorTotal: TEdit
+      Left = 10
+      Top = 340
+      Width = 75
+      Height = 21
+      Enabled = False
+      TabOrder = 2
+    end
+    object Button1: TButton
+      Left = 6
+      Top = 48
+      Width = 98
+      Height = 25
+      Caption = 'Pesquisar Vendas'
+      TabOrder = 4
+      OnClick = Button1Click
+    end
+  end
+  object Panel5: TPanel
+    Left = 0
+    Top = 49
+    Width = 669
+    Height = 49
+    Align = alTop
+    Color = clGradientActiveCaption
+    ParentBackground = False
+    TabOrder = 1
+    object Label2: TLabel
+      Left = 6
+      Top = 1
+      Width = 33
+      Height = 13
+      Caption = 'C'#243'digo'
+    end
+    object Label4: TLabel
+      Left = 168
+      Top = 4
+      Width = 38
+      Height = 13
+      Caption = 'Produto'
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 133
+      Top = 20
+      Width = 23
+      Height = 21
+      Glyph.Data = {
+        36050000424D3605000000000000360400002800000010000000100000000100
+        08000000000000010000120B0000120B000000010000450000002C2B2B00F1F1
+        F100CFCFCF00B4B4B300999999007E7F80005D5C5C00DDDDDC00CCCCCC004C4A
+        4A00B1B1B100FFFFFF007A7A7A00E5E5E500AFAFAF00BFBFBF0087878800D4D4
+        D300F7F7F700EBECEB0092929200C6C6C40058575700B9B9B800DFDFDF00A39D
+        9C00948D8C00D8D8D70084848300302F3000F5F5F500E9E9E90064636300C7C3
+        C200EFEFEF009D9D9C00E1E1E1007E7E7D00FBFBFB00BDBABA00D2D2D100CFCF
+        CD00CACBC90082828200DBDBD9002E2E2E004F4F4F008686860033333300B3B3
+        B2009F9F9F00EDEDEC00E3E3E300F9F9F900827F7D00D7D7D500959595008585
+        8500BDBDBD00D3D3D100B3B3B300D9D9D900B5B5B500E3E1E100EBEDEB00D5D5
+        D500313031008587850000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000000000000B0B0B0B0B0B
+        0B0B0B0B1F0F392E0C0B0B0B0B0B0B0B0B261F023E32380042380B0B0B0B0B0B
+        0B2601221E0B204210180B0B0B0B0B0B0B0B0B0B0B061D2B350B0B0B0B0B0B0B
+        0B0B0B0B161D2B120B0B0B0B0B0B261E0B0B0B190905120B0B0B0B0B2431173A
+        312A211A27120B0B0B0B0B3D0E241F1F1F2936080B0B0B0B0B0B1F0A0D2C1B1B
+        1B2408080B0B0B0B0B0B23153728283B3B3B2C310B0B0B0B0B0B250829292929
+        29291103010B0B0B0B0B1C2A2828282828281B311E0B0B0B0B0B170F0D070707
+        0718070A0B0B0B0B0B0B0B03071E3313011E0E180B0B0B0B0B0B0B1231081F22
+        0731110B0B0B0B0B0B0B0B0B0B0E2F3914240B0B0B0B0B0B0B0B}
+      OnClick = SpeedButton2Click
+    end
+    object dbeNomePro: TDBEdit
+      Left = 168
+      Top = 18
+      Width = 381
+      Height = 21
+      DataField = 'NOME_PRO'
+      Enabled = False
+      TabOrder = 0
+    end
+    object dbeCodPro: TEdit
+      Left = 6
+      Top = 20
+      Width = 121
+      Height = 21
+      TabOrder = 1
+      OnExit = Edit1Exit
+    end
+  end
+  object dsVenda: TDataSource
+    DataSet = DM.qryVenda
+    Left = 448
+    Top = 160
+  end
+  object qryPesquisa: TFDQuery
+    Connection = DM.CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM PRODUTO'
+      '')
+    Left = 536
+    Top = 160
+    object qryPesquisaID_PRO: TIntegerField
+      FieldName = 'ID_PRO'
+      Origin = 'ID_PRO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryPesquisaNOME_PRO: TStringField
+      FieldName = 'NOME_PRO'
+      Origin = 'NOME_PRO'
+      Required = True
+      Size = 40
+    end
+    object qryPesquisaQTDE_PRO: TBCDField
+      FieldName = 'QTDE_PRO'
+      Origin = 'QTDE_PRO'
+      Precision = 18
+      Size = 2
+    end
+    object qryPesquisaVLR_CUSTO: TCurrencyField
+      FieldName = 'VLR_CUSTO'
+      Origin = 'VLR_CUSTO'
+    end
+    object qryPesquisaVLR_VENDA: TCurrencyField
+      FieldName = 'VLR_VENDA'
+      Origin = 'VLR_VENDA'
+      Required = True
+    end
+    object qryPesquisaID_CAT: TIntegerField
+      FieldName = 'ID_CAT'
+      Origin = 'ID_CAT'
+    end
+    object qryPesquisaSITUACAO: TIntegerField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+    end
+  end
+  object dsCliente: TDataSource
+    DataSet = DM.qryCliente
+    Left = 336
+    Top = 160
+  end
+  object itemVenda: TDataSource
+    DataSet = DM.qryItemVenda
+    OnStateChange = itemVendaStateChange
+    OnDataChange = itemVendaDataChange
+    Left = 584
+    Top = 200
+  end
+  object dsproduto: TDataSource
+    DataSet = DM.qryProduto
+    Left = 616
+    Top = 296
+  end
+end

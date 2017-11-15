@@ -1,0 +1,117 @@
+unit untPescCidade;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.ExtCtrls, frxClass, frxDBSet;
+
+type
+  TfrmPesqCidade = class(TForm)
+    Panel1: TPanel;
+    edtPesquisa: TEdit;
+    qryPesquisa: TFDQuery;
+    dsPerquisa: TDataSource;
+    tbPesquisa: TfrxDBDataset;
+    frxReport1: TfrxReport;
+    Button1: TButton;
+    qryPesquisaCOD_CIDADE: TIntegerField;
+    qryPesquisaNOME_CIDADE: TStringField;
+    qryPesquisaUF_CIDADE: TStringField;
+    DBGrid1: TDBGrid;
+    cbCampoPesq: TComboBox;
+    procedure edtPesquisaChange(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBGrid1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    vRetorno: integer;
+  end;
+
+var
+  frmPesqCidade: TfrmPesqCidade;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM;
+
+procedure TfrmPesqCidade.Button1Click(Sender: TObject);
+begin
+  qryPesquisa.Close;
+  //
+  qryPesquisa.Open;
+
+  frxReport1.ShowReport();
+end;
+
+procedure TfrmPesqCidade.DBGrid1DblClick(Sender: TObject);
+begin
+   vRetorno := qryPesquisaCOD_CIDADE.Value;
+  Close;
+end;
+
+procedure TfrmPesqCidade.edtPesquisaChange(Sender: TObject);
+begin
+    if (cbCampoPesq.ItemIndex = 0) then
+  begin
+        if (edtPesquisa.Text <> '') then
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CIDADE');
+    qryPesquisa.SQL.Add('WHERE NOME_CIDADE LIKE :P1');
+    qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtPesquisa.Text + '%';
+    qryPesquisa.Open;
+  end
+  else
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CIDADE');
+    qryPesquisa.Open;
+  end;
+  end;
+    if (cbCampoPesq.ItemIndex = 1) then
+  begin
+        if (edtPesquisa.Text <> '') then
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CIDADE');
+    qryPesquisa.SQL.Add('WHERE UF_CIDADE LIKE :P1');
+    qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtPesquisa.Text + '%';
+    qryPesquisa.Open;
+  end
+  else
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CIDADE');
+    qryPesquisa.Open;
+  end;
+  end;
+end;
+
+procedure TfrmPesqCidade.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  qryPesquisa.Close
+end;
+
+procedure TfrmPesqCidade.FormShow(Sender: TObject);
+begin
+  qryPesquisa.Open();
+end;
+
+end.

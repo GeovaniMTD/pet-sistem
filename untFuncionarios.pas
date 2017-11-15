@@ -1,0 +1,271 @@
+unit untFuncionarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls,
+  Vcl.Mask, Vcl.DBCtrls, Vcl.Buttons;
+
+type
+  TfrmFuncionarios = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    btnCancelar: TButton;
+    btnGravar: TButton;
+    btnNovo: TButton;
+    SpeedButton1: TSpeedButton;
+    Label1: TLabel;
+    dsFuncionario: TDataSource;
+    Label2: TLabel;
+    dbeNome: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    DBEdit4: TDBEdit;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Label7: TLabel;
+    DBEdit2: TDBEdit;
+    Label8: TLabel;
+    DBEdit7: TDBEdit;
+    edtComSenha: TEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    DBEdit6: TDBEdit;
+    Label6: TLabel;
+    DBEdit8: TDBEdit;
+    Label11: TLabel;
+    DBEdit9: TDBEdit;
+    Label12: TLabel;
+    DBEdit10: TDBEdit;
+    rgSituacao: TDBRadioGroup;
+    edtCodigo: TEdit;
+    Label13: TLabel;
+    DBEdit1: TDBEdit;
+    Label14: TLabel;
+    DBEdit11: TDBEdit;
+    Label15: TLabel;
+    DBEdit12: TDBEdit;
+    btnCpf: TButton;
+    procedure dsFuncionarioStateChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edtCodigoExit(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure btnCpfClick(Sender: TObject);
+    procedure DBEdit5KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit4KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit8KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit6KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit9KeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+      function ValidaCPF(num: string): boolean;
+  public
+    { Public declarations }
+    vRetorno: integer;
+  end;
+
+var
+  frmFuncionarios: TfrmFuncionarios;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM, untPesqFuncionarios;
+
+procedure TfrmFuncionarios.btnCancelarClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Cancel;
+end;
+
+procedure TfrmFuncionarios.btnCpfClick(Sender: TObject);
+begin
+   if(ValidaCPF(DBEdit4.Text))then
+  begin
+    ShowMessage('Cpf-valido');
+  end
+  else
+  begin
+    ShowMessage('Cpf-invalido-');
+
+  end;
+end;
+
+procedure TfrmFuncionarios.btnExcluirClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Delete;
+end;
+
+procedure TfrmFuncionarios.btnGravarClick(Sender: TObject);
+begin
+
+  if (dm.qryFuncionario.State = dsInsert) then
+  begin
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_FUN) AS ULTIMO FROM FUNCIONARIO');
+    dm.qryUltimo.Open;
+
+    dm.qryFUNCIONARIOID_FUN.AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+  end;
+
+  dm.qryFuncionario.Post;
+end;
+
+procedure TfrmFuncionarios.btnNovoClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Insert;
+  dbeNome.SetFocus;
+end;
+
+procedure TfrmFuncionarios.DBEdit4KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmFuncionarios.DBEdit5KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmFuncionarios.DBEdit6KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmFuncionarios.DBEdit8KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmFuncionarios.DBEdit9KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+
+end;
+
+procedure TfrmFuncionarios.dsFuncionarioStateChange(Sender: TObject);
+begin
+  if (dm.qryFuncionario.State in [dsInsert,dsEdit]) then
+  begin
+    btnNovo.Visible    := False;
+
+    btnGravar.Visible  := True;
+    btnCancelar.Visible:= True;
+  end
+  else
+  begin
+    btnNovo.Visible    := True;
+
+    btnGravar.Visible  := False;
+    btnCancelar.Visible:= False;
+  end;
+end;
+
+procedure TfrmFuncionarios.edtCodigoExit(Sender: TObject);
+begin
+   if (edtCodigo.Text <> '') then
+  begin
+    dm.qryFuncionario.Close;
+    dm.qryFuncionario.ParamByName('P1').AsString :=
+                                edtCodigo.Text;
+    dm.qryFuncionario.Open;
+
+    if (dm.qryFuncionario.IsEmpty) then
+    begin
+      ShowMessage('Código não encontrado.');
+      edtCodigo.SetFocus;
+      edtCodigo.Clear;
+
+    end;
+  end;
+end;
+
+procedure TfrmFuncionarios.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dm.qryFuncionario.Close;
+end;
+
+procedure TfrmFuncionarios.FormShow(Sender: TObject);
+begin
+  dm.qryFuncionario.Open();
+  rgSituacao.ItemIndex:= 0;
+end;
+
+procedure TfrmFuncionarios.SpeedButton1Click(Sender: TObject);
+begin
+    try
+    frmPesqFuncionarios.ShowModal;
+  finally
+    if (frmPesqFuncionarios.vRetorno > 0) then
+    begin
+      edtCodigo.Text := IntTostr(frmPesqFuncionarios.vRetorno);
+      edtCodigoExit(Sender);
+    end;
+  end;
+end;
+
+ function TfrmFuncionarios.ValidaCPF(num: string): boolean;
+  var
+n1,n2,n3,n4,n5,n6,n7,n8,n9: integer;
+d1,d2: integer;
+digitado, calculado: string;
+begin
+  if (Length(num)<>11) then
+    begin
+      Result:=False;
+    end
+  else
+    begin
+      n1:=StrToInt(num[1]);
+      n2:=StrToInt(num[2]);
+      n3:=StrToInt(num[3]);
+      n4:=StrToInt(num[4]);
+      n5:=StrToInt(num[5]);
+      n6:=StrToInt(num[6]);
+      n7:=StrToInt(num[7]);
+      n8:=StrToInt(num[8]);
+      n9:=StrToInt(num[9]);
+      d1:=n9*2+n8*3+n7*4+n6*5+n5*6+n4*7+n3*8+n2*9+n1*10;
+      d1:=11-(d1 mod 11);
+      if d1>=10 then d1:=0;
+      d2:=d1*2+n9*3+n8*4+n7*5+n6*6+n5*7+n4*8+n3*9+n2*10+n1*11;
+      d2:=11-(d2 mod 11);
+      if d2>=10 then d2:=0;
+      calculado:=inttostr(d1)+inttostr(d2);
+      digitado:=num[10]+num[11];
+      if calculado=digitado then
+        Result :=true
+        else
+        Result :=false;
+    end;
+end;
+
+end.

@@ -1,0 +1,497 @@
+object DM: TDM
+  OldCreateOrder = False
+  Height = 273
+  Width = 354
+  object CONEXAO: TFDConnection
+    Params.Strings = (
+      'Database=D:\Projetos\pet sistem\Documentos\BANCO.FDB'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'DriverID=FB')
+    Connected = True
+    LoginPrompt = False
+    Left = 288
+    Top = 128
+  end
+  object qryProduto: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT produto.*, CATEGORIA.NOME_CAT,'
+      ''
+      'CASE SITUACAO'
+      'WHEN '#39'1'#39' THEN '#39'ABERTO'#39
+      'WHEN '#39'0'#39' THEN '#39'FECHADO'#39
+      'END AS SITUACAO'
+      'FROM PRODUTO'
+      'LEFT JOIN CATEGORIA ON PRODUTO.ID_CAT = CATEGORIA.ID_CAT'
+      'where id_pro = :P1')
+    Left = 40
+    Top = 128
+    ParamData = <
+      item
+        Name = 'P1'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryProdutoID_PRO: TIntegerField
+      FieldName = 'ID_PRO'
+      Origin = 'ID_PRO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryProdutoNOME_PRO: TStringField
+      FieldName = 'NOME_PRO'
+      Origin = 'NOME_PRO'
+      Required = True
+      Size = 40
+    end
+    object qryProdutoQTDE_PRO: TBCDField
+      FieldName = 'QTDE_PRO'
+      Origin = 'QTDE_PRO'
+      Precision = 18
+      Size = 2
+    end
+    object qryProdutoVLR_CUSTO: TCurrencyField
+      FieldName = 'VLR_CUSTO'
+      Origin = 'VLR_CUSTO'
+    end
+    object qryProdutoVLR_VENDA: TCurrencyField
+      FieldName = 'VLR_VENDA'
+      Origin = 'VLR_VENDA'
+      Required = True
+    end
+    object qryProdutoCOD_BARRAS: TStringField
+      FieldName = 'COD_BARRAS'
+      Origin = 'COD_BARRAS'
+      Size = 30
+    end
+    object qryProdutoID_CAT: TIntegerField
+      FieldName = 'ID_CAT'
+      Origin = 'ID_CAT'
+    end
+    object qryProdutoSITUACAO: TIntegerField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+    end
+    object qryProdutoNOME_CAT: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_CAT'
+      Origin = 'NOME_CAT'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 30
+    end
+    object qryProdutoSITUACAO_1: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'SITUACAO_1'
+      Origin = 'SITUACAO'
+      ProviderFlags = []
+      ReadOnly = True
+      FixedChar = True
+      Size = 7
+    end
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 208
+    Top = 128
+  end
+  object qryCliente: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT CLIENTE.*, CIDADE.NOME_CIDADE, CIDADE.UF_CIDADE'
+      'FROM CLIENTE'
+      'LEFT JOIN CIDADE ON CLIENTE.COD_CIDADE = CIDADE.COD_CIDADE'
+      'WHERE ID_CLI = :P1')
+    Left = 40
+    Top = 192
+    ParamData = <
+      item
+        Name = 'P1'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryClienteNOME_CLI: TStringField
+      FieldName = 'NOME_CLI'
+      Origin = 'NOME_CLI'
+      Required = True
+      Size = 50
+    end
+    object qryClienteID_CLI: TIntegerField
+      FieldName = 'ID_CLI'
+      Origin = 'ID_CLI'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryClienteEND_CLI: TStringField
+      FieldName = 'END_CLI'
+      Origin = 'END_CLI'
+      Size = 30
+    end
+    object qryClienteFONE_CLI: TStringField
+      FieldName = 'FONE_CLI'
+      Origin = 'FONE_CLI'
+      EditMask = '(99)9.9999-9999'
+    end
+    object qryClienteCOD_CIDADE: TIntegerField
+      FieldName = 'COD_CIDADE'
+      Origin = 'COD_CIDADE'
+      Required = True
+    end
+    object qryClienteCPF: TStringField
+      FieldName = 'CPF'
+      Origin = 'CPF'
+      EditMask = '999.999.999-99'
+      Size = 22
+    end
+    object qryClienteCEP_CLI: TStringField
+      FieldName = 'CEP_CLI'
+      Origin = 'CEP_CLI'
+      EditMask = '99999-999'
+    end
+    object qryClienteBAIRRO_CLI: TStringField
+      FieldName = 'BAIRRO_CLI'
+      Origin = 'BAIRRO_CLI'
+    end
+    object qryClienteDATA_NASCIMENTO: TDateField
+      FieldName = 'DATA_NASCIMENTO'
+      Origin = 'DATA_NASCIMENTO'
+      EditMask = '99/99/9999'
+    end
+    object qryClienteSITUACAO: TIntegerField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+    end
+    object qryClienteNUMERO_END: TStringField
+      FieldName = 'NUMERO_END'
+      Origin = 'NUMERO_END'
+      Size = 10
+    end
+    object qryClienteSEXO: TIntegerField
+      FieldName = 'SEXO'
+      Origin = 'SEXO'
+    end
+    object qryClienteNOME_CIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_CIDADE'
+      Origin = 'NOME_CIDADE'
+      ProviderFlags = []
+      Size = 34
+    end
+    object qryClienteUF_CIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UF_CIDADE'
+      Origin = 'UF_CIDADE'
+      ProviderFlags = []
+      Size = 2
+    end
+  end
+  object qryUltimo: TFDQuery
+    Connection = CONEXAO
+    Left = 96
+    Top = 192
+  end
+  object qryFuncionario: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM FUNCIONARIO'
+      'WHERE ID_FUN = :P1')
+    Left = 112
+    Top = 128
+    ParamData = <
+      item
+        Name = 'P1'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryFuncionarioID_FUN: TIntegerField
+      FieldName = 'ID_FUN'
+      Origin = 'ID_FUN'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryFuncionarioNOME_FUN: TStringField
+      FieldName = 'NOME_FUN'
+      Origin = 'NOME_FUN'
+      Size = 30
+    end
+    object qryFuncionarioEND_FUN: TStringField
+      FieldName = 'END_FUN'
+      Origin = 'END_FUN'
+    end
+    object qryFuncionarioCPF_FUN: TStringField
+      FieldName = 'CPF_FUN'
+      Origin = 'CPF_FUN'
+    end
+    object qryFuncionarioFONE_FUN: TStringField
+      FieldName = 'FONE_FUN'
+      Origin = 'FONE_FUN'
+    end
+    object qryFuncionarioDATA_NASIMENTO_FUN: TDateField
+      FieldName = 'DATA_NASIMENTO_FUN'
+      Origin = 'DATA_NASIMENTO_FUN'
+      EditMask = '99/99/9999'
+    end
+    object qryFuncionarioLOGIN_FUN: TStringField
+      FieldName = 'LOGIN_FUN'
+      Origin = 'LOGIN_FUN'
+      Size = 25
+    end
+    object qryFuncionarioSENHA_FUN: TStringField
+      FieldName = 'SENHA_FUN'
+      Origin = 'SENHA_FUN'
+      Size = 25
+    end
+    object qryFuncionarioSITUACAO: TIntegerField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+    end
+    object qryFuncionarioBAIRRO_FUN: TStringField
+      FieldName = 'BAIRRO_FUN'
+      Origin = 'BAIRRO_FUN'
+      Size = 15
+    end
+    object qryFuncionarioCEP_FUN: TStringField
+      FieldName = 'CEP_FUN'
+      Origin = 'CEP_FUN'
+      EditMask = '9999-999'
+      Size = 15
+    end
+    object qryFuncionarioDATA_ADMISSAO_FUN: TDateField
+      FieldName = 'DATA_ADMISSAO_FUN'
+      Origin = 'DATA_ADMISSAO_FUN'
+      EditMask = '99/99/9999'
+    end
+    object qryFuncionarioDATA_DEMISSAO_FUN: TDateField
+      FieldName = 'DATA_DEMISSAO_FUN'
+      Origin = 'DATA_DEMISSAO_FUN'
+      EditMask = '99/99/9999'
+    end
+    object qryFuncionarioCARGO_FUN: TStringField
+      FieldName = 'CARGO_FUN'
+      Origin = 'CARGO_FUN'
+      Size = 15
+    end
+    object qryFuncionarioNUMERO_END_FUN: TStringField
+      FieldName = 'NUMERO_END_FUN'
+      Origin = 'NUMERO_END_FUN'
+      Size = 10
+    end
+  end
+  object qryCategoria: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM CATEGORIA'
+      'WHERE ID_CAT = :P1')
+    Left = 168
+    Top = 192
+    ParamData = <
+      item
+        Name = 'P1'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryCategoriaID_CAT: TIntegerField
+      FieldName = 'ID_CAT'
+      Origin = 'ID_CAT'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryCategoriaNOME_CAT: TStringField
+      FieldName = 'NOME_CAT'
+      Origin = 'NOME_CAT'
+      Size = 30
+    end
+  end
+  object qryCidade: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM CIDADE'
+      'WHERE COD_CIDADE = :P2')
+    Left = 232
+    Top = 192
+    ParamData = <
+      item
+        Name = 'P2'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryCidadeCOD_CIDADE: TIntegerField
+      FieldName = 'COD_CIDADE'
+      Origin = 'COD_CIDADE'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryCidadeNOME_CIDADE: TStringField
+      FieldName = 'NOME_CIDADE'
+      Origin = 'NOME_CIDADE'
+      Size = 34
+    end
+    object qryCidadeUF_CIDADE: TStringField
+      FieldName = 'UF_CIDADE'
+      Origin = 'UF_CIDADE'
+      Required = True
+      Size = 2
+    end
+  end
+  object qryExecuta: TFDQuery
+    Connection = CONEXAO
+    Left = 296
+    Top = 192
+  end
+  object qryUsuario: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT ID_FUN,LOGIN_FUN,SENHA_FUN FROM FUNCIONARIO'
+      'WHERE ID_FUN = :P1')
+    Left = 288
+    Top = 80
+    ParamData = <
+      item
+        Name = 'P1'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryUsuarioID_FUN: TIntegerField
+      FieldName = 'ID_FUN'
+      Origin = 'ID_FUN'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryUsuarioLOGIN_FUN: TStringField
+      FieldName = 'LOGIN_FUN'
+      Origin = 'LOGIN_FUN'
+      Size = 25
+    end
+    object qryUsuarioSENHA_FUN: TStringField
+      FieldName = 'SENHA_FUN'
+      Origin = 'SENHA_FUN'
+      Size = 25
+    end
+  end
+  object qryItemVenda: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT ITEM_VENDA.*, PRODUTO.NOME_PRO'
+      'FROM ITEM_VENDA'
+      'INNER JOIN PRODUTO ON ITEM_VENDA.ID_PRO = PRODUTO.ID_PRO'
+      'WHERE ID_VEN = :P1')
+    Left = 208
+    Top = 80
+    ParamData = <
+      item
+        Name = 'P1'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryItemVendaID_PRO: TIntegerField
+      FieldName = 'ID_PRO'
+      Origin = 'ID_PRO'
+      Required = True
+    end
+    object qryItemVendaID_VEN: TIntegerField
+      FieldName = 'ID_VEN'
+      Origin = 'ID_VEN'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryItemVendaQUANTIDADE: TCurrencyField
+      FieldName = 'QUANTIDADE'
+      Origin = 'QUANTIDADE'
+    end
+    object qryItemVendaVLR_UNIT: TCurrencyField
+      FieldName = 'VLR_UNIT'
+      Origin = 'VLR_UNIT'
+    end
+    object qryItemVendaDESCONTO: TCurrencyField
+      FieldName = 'DESCONTO'
+      Origin = 'DESCONTO'
+    end
+    object qryItemVendaTOTAL: TCurrencyField
+      FieldName = 'TOTAL'
+      Origin = 'TOTAL'
+    end
+    object qryItemVendaCOD_ITEN: TIntegerField
+      FieldName = 'COD_ITEN'
+      Origin = 'COD_ITEN'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryItemVendaNOME_PRO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_PRO'
+      Origin = 'NOME_PRO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 40
+    end
+  end
+  object qryVenda: TFDQuery
+    Connection = CONEXAO
+    SQL.Strings = (
+      'SELECT * FROM VENDA')
+    Left = 128
+    Top = 80
+    object qryVendaID_VEN: TIntegerField
+      FieldName = 'ID_VEN'
+      Origin = 'ID_VEN'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryVendaID_CLI: TIntegerField
+      FieldName = 'ID_CLI'
+      Origin = 'ID_CLI'
+      Required = True
+    end
+    object qryVendaDESCRICAO_VEN: TStringField
+      FieldName = 'DESCRICAO_VEN'
+      Origin = 'DESCRICAO_VEN'
+    end
+    object qryVendaVALOR_VEN: TBCDField
+      FieldName = 'VALOR_VEN'
+      Origin = 'VALOR_VEN'
+      Precision = 18
+      Size = 2
+    end
+    object qryVendaDATA_VEN: TDateField
+      FieldName = 'DATA_VEN'
+      Origin = 'DATA_VEN'
+    end
+    object qryVendaSITUACAO: TIntegerField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+    end
+    object qryVendaID_FUN: TIntegerField
+      FieldName = 'ID_FUN'
+      Origin = 'ID_FUN'
+      Required = True
+    end
+    object qryVendaDESCONTO: TCurrencyField
+      FieldName = 'DESCONTO'
+      Origin = 'DESCONTO'
+    end
+    object qryVendaTOTAL: TCurrencyField
+      FieldName = 'TOTAL'
+      Origin = 'TOTAL'
+    end
+    object qryVendaSUB_TOTAL: TCurrencyField
+      FieldName = 'SUB_TOTAL'
+      Origin = 'SUB_TOTAL'
+    end
+    object qryVendaQUANTIDADE: TCurrencyField
+      FieldName = 'QUANTIDADE'
+      Origin = 'QUANTIDADE'
+    end
+    object qryVendaVLR_UNIT: TCurrencyField
+      FieldName = 'VLR_UNIT'
+      Origin = 'VLR_UNIT'
+    end
+  end
+end

@@ -1,0 +1,69 @@
+object frmCadCat: TfrmCadCat
+  Left = 0
+  Top = 0
+  Caption = 'Cadastro de Categoria'
+  ClientHeight = 223
+  ClientWidth = 471
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 48
+    Width = 27
+    Height = 13
+    Caption = 'Nome'
+    FocusControl = dbeNome
+  end
+  object Label2: TLabel
+    Left = 8
+    Top = 5
+    Width = 33
+    Height = 13
+    Caption = 'C'#243'digo'
+    FocusControl = dbeNome
+  end
+  object dbeNome: TDBEdit
+    Left = 8
+    Top = 67
+    Width = 394
+    Height = 21
+    CharCase = ecUpperCase
+    DataField = 'NOME_CAT'
+    DataSource = dsPesquisa
+    TabOrder = 0
+  end
+  object btnGravar: TButton
+    Left = 8
+    Top = 120
+    Width = 75
+    Height = 25
+    Caption = 'Gravar'
+    TabOrder = 1
+    OnClick = btnGravarClick
+  end
+  object edtCodigo: TEdit
+    Left = 8
+    Top = 21
+    Width = 121
+    Height = 21
+    NumbersOnly = True
+    TabOrder = 2
+    OnExit = edtCodigoExit
+  end
+  object dsPesquisa: TDataSource
+    DataSet = DM.qryCategoria
+    Left = 416
+    Top = 48
+  end
+end

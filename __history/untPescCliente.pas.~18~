@@ -1,0 +1,145 @@
+unit untPescCliente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Vcl.StdCtrls, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids,
+  Vcl.ExtCtrls, Vcl.DBCtrls;
+
+type
+  TfrmPesqCliente = class(TForm)
+    Panel1: TPanel;
+    edtPesquisa: TEdit;
+    DBGrid1: TDBGrid;
+    qryPesquisa: TFDQuery;
+    dsPesquisa: TDataSource;
+    cbCampoPesq: TComboBox;
+    qryPesquisaID_CLI: TIntegerField;
+    qryPesquisaNOME_CLI: TStringField;
+    qryPesquisaEND_CLI: TStringField;
+    qryPesquisaFONE_CLI: TStringField;
+    qryPesquisaCOD_CIDADE: TIntegerField;
+    qryPesquisaCPF: TStringField;
+    qryPesquisaCEP_CLI: TStringField;
+    qryPesquisaBAIRRO_CLI: TStringField;
+    qryPesquisaDATA_NASCIMENTO: TDateField;
+    qryPesquisaSITUACAO: TIntegerField;
+    qryPesquisaNUMERO_END: TStringField;
+    qryPesquisaSEXO: TIntegerField;
+    rgFiltro: TDBRadioGroup;
+    procedure FormShow(Sender: TObject);
+    procedure edtPesquisaChange(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    vRetorno: integer;
+  end;
+
+var
+  frmPesqCliente: TfrmPesqCliente;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM;
+
+procedure TfrmPesqCliente.DBGrid1DblClick(Sender: TObject);
+begin
+  vRetorno := qryPesquisaID_CLI.Value;
+  Close;
+end;
+
+procedure TfrmPesqCliente.edtPesquisaChange(Sender: TObject);
+begin
+  if (cbCampoPesq.ItemIndex = 0) then
+  begin
+        if (edtPesquisa.Text <> '') then
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CLIENTE');
+    qryPesquisa.SQL.Add('WHERE NOME_CLI LIKE :P1');
+    qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtPesquisa.Text + '%';
+    qryPesquisa.Open;
+  end
+  else
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CLIENTE');
+    qryPesquisa.Open;
+  end;
+end;
+
+    if (cbCampoPesq.ItemIndex = 1) then
+    begin
+      if (edtPesquisa.Text <> '') then
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CLIENTE');
+    qryPesquisa.SQL.Add('WHERE END_CLI LIKE :P1');
+    qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtPesquisa.Text + '%';
+    qryPesquisa.Open;
+  end
+  else
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CLIENTE');
+    qryPesquisa.Open;
+  end;
+    end;
+
+    if (cbCampoPesq.ItemIndex = 2) then
+    begin
+            if (edtPesquisa.Text <> '') then
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CLIENTE');
+    qryPesquisa.SQL.Add('WHERE CPF LIKE :P1');
+    qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtPesquisa.Text + '%';
+    qryPesquisa.Open;
+  end
+  else
+  begin
+    qryPesquisa.Close;
+    qryPesquisa.SQL.Clear;
+    qryPesquisa.SQL.Add('SELECT * FROM CLIENTE');
+    qryPesquisa.Open;
+  end;
+  end;
+end;
+
+
+
+procedure TfrmPesqCliente.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  qryPesquisa.Close;
+end;
+
+procedure TfrmPesqCliente.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  IF Key = Vk_Escape then frmPesqCliente.Close;
+end;
+
+procedure TfrmPesqCliente.FormShow(Sender: TObject);
+begin
+  qryPesquisa.Open();
+  vRetorno := 0;
+end;
+
+end.

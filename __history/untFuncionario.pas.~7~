@@ -1,0 +1,33 @@
+unit untFuncionario;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.DBCtrls;
+
+type
+  TfrmFuncionario = class(TForm)
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFuncionario: TfrmFuncionario;
+
+implementation
+
+{$R *.dfm}
+
+uses  untDM;
+
+procedure TfrmFuncionario.FormShow(Sender: TObject);
+begin
+  dm.qryFuncionario.open();
+end;
+
+end.

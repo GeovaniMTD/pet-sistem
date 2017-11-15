@@ -1,0 +1,279 @@
+unit untProduto;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Data.DB, Vcl.Buttons,
+  Vcl.Mask, Vcl.DBCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmProduto = class(TForm)
+    Label1: TLabel;
+    Label2: TLabel;
+    edtNome: TDBEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    dbecodBarras: TDBEdit;
+    Label5: TLabel;
+    Label6: TLabel;
+    dsProduto: TDataSource;
+    btnNovo: TButton;
+    btnCancelar: TButton;
+    btnGravar: TButton;
+    edtCodigo: TEdit;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Label8: TLabel;
+    SpeedButton2: TSpeedButton;
+    DBEdit4: TDBEdit;
+    DBEdit5: TDBEdit;
+    DBEdit3: TDBEdit;
+    Label9: TLabel;
+    dbeNomeCat: TDBEdit;
+    dbeCodCat: TDBEdit;
+    rgSituacao: TDBRadioGroup;
+    SpeedButton1: TSpeedButton;
+    procedure dsProdutoStateChange(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure edtCodigoExit(Sender: TObject);
+    procedure dsProdutoDataChange(Sender: TObject; Field: TField);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure dbeCodCatExit(Sender: TObject);
+    procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
+    procedure dbeCodCatKeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit3KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit4KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit5KeyPress(Sender: TObject; var Key: Char);
+    procedure dbecodBarrasKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNomeKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProduto: TfrmProduto;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM, untPescCliente, untPesqProduto, untPesqCategoria;
+
+procedure TfrmProduto.btnCancelarClick(Sender: TObject);
+begin
+ dm.qryProduto.Cancel;
+end;
+
+procedure TfrmProduto.btnExcluirClick(Sender: TObject);
+begin
+  dm.qryProduto.Delete;
+end;
+
+procedure TfrmProduto.btnGravarClick(Sender: TObject);
+begin
+ if (trim(dbeCodCat.Text) = '') then
+  begin
+    ShowMessage('Informe a categoria');
+    dbeCodCat.SetFocus;
+    exit; // para a procedure nesse ponto
+  end;
+
+  if (dm.qryProduto.State = dsInsert) then
+  begin
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_PRO) AS ULTIMO FROM PRODUTO');
+    dm.qryUltimo.Open;
+
+    dm.qryPRODUTOID_PRO.AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+  end;
+
+  dm.qryProduto.Post;
+end;
+
+procedure TfrmProduto.btnNovoClick(Sender: TObject);
+begin
+  dm.qryProduto.Insert;
+  edtNome.SetFocus;
+end;
+
+procedure TfrmProduto.dbecodBarrasKeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmProduto.dbeCodCatExit(Sender: TObject);
+begin
+     if (dbeCodCat.Text <> '') then
+  begin
+    dm.qryExecuta.Close;
+    dm.qryExecuta.SQL.Clear;
+    dm.qryExecuta.SQL.Add('SELECT * FROM CATEGORIA WHERE ID_CAT = :P1');
+    dm.qryExecuta.ParamByName('P1').AsString := dbeCodCat.Text;
+    dm.qryExecuta.Open;
+
+    if not(dm.qryExecuta.IsEmpty) then
+    begin
+
+      dbeCodCat.Text  := dm.qryExecuta.FieldByName('ID_CAT').AsString;
+      dbeNomeCat.Text := dm.qryExecuta.FieldByName('NOME_CAT').AsString;
+    end
+    else
+    begin
+      ShowMessage('Categoria não encontrada');
+      dbeCodCat.SetFocus;
+      dbeCodCat.Clear;
+      dbeNomeCat.Clear;
+
+    end;
+  end;
+end;
+
+procedure TfrmProduto.dbeCodCatKeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmProduto.DBEdit3KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmProduto.DBEdit4KeyPress(Sender: TObject; var Key: Char);
+begin
+  if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmProduto.DBEdit5KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmProduto.dsProdutoDataChange(Sender: TObject; Field: TField);
+begin
+   edtCodigo.Text := dm.qryProdutoID_pro.AsString;
+end;
+
+procedure TfrmProduto.dsProdutoStateChange(Sender: TObject);
+begin
+  if (dm.qryProduto.State in [dsInsert,dsEdit]) then
+  begin
+    btnNovo.Visible    := False;
+
+    btnGravar.Visible  := True;
+    btnCancelar.Visible:= True;
+  end
+  else
+  begin
+    btnNovo.Visible    := True;
+
+    btnGravar.Visible  := False;
+    btnCancelar.Visible:= False;
+  end;
+end;
+
+procedure TfrmProduto.edtCodigoExit(Sender: TObject);
+begin
+  if (edtCodigo.Text <> '') then
+  begin
+    dm.qryProduto.Close;
+    dm.qryProduto.ParamByName('P1').AsString :=
+                                edtCodigo.Text;
+    dm.qryProduto.Open;
+
+    if (dm.qryProduto.IsEmpty) then
+    begin
+      ShowMessage('Produto não encontrado.');
+      edtCodigo.SetFocus;
+      edtCodigo.Clear;
+    end
+
+  end;
+end;
+
+procedure TfrmProduto.edtCodigoKeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['a'..'z', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmProduto.edtNomeKeyPress(Sender: TObject; var Key: Char);
+begin
+    if (key in ['#','&', '@', '/', '$']) then
+  begin
+  key := #0;
+  end;
+end;
+
+procedure TfrmProduto.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dm.qryProduto.Close;
+end;
+
+procedure TfrmProduto.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  IF Key = Vk_Escape then frmProduto.Close;
+end;
+
+procedure TfrmProduto.FormShow(Sender: TObject);
+begin
+  dm.qryProduto.Open();
+end;
+
+procedure TfrmProduto.SpeedButton1Click(Sender: TObject);
+begin
+    try
+    frmPesqProduto.ShowModal;
+  finally
+    if (frmPesqProduto.vRetorno > 0) then
+    begin
+      edtCodigo.Text := IntTostr(frmPesqProduto.vRetorno);
+      edtCodigoExit(Sender);
+    end;
+  end;
+end;
+
+procedure TfrmProduto.SpeedButton2Click(Sender: TObject);
+begin
+    try
+    frmPesqCategoria.ShowModal;
+  finally
+    if (frmPesqCategoria.vRetorno > 0) then
+    begin
+      dbeCodCat.Text := IntTostr(frmPesqCategoria.vRetorno);
+      dbeCodCatExit(Sender);
+    end;
+  end;
+
+end;
+
+end.

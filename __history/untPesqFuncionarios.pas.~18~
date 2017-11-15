@@ -1,0 +1,109 @@
+unit untPesqFuncionarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmPesqFuncionarios = class(TForm)
+    Panel1: TPanel;
+    edtNome: TEdit;
+    DBGrid1: TDBGrid;
+    dsPesquisa: TDataSource;
+    qryPesquisa: TFDQuery;
+    cbCampoPesq: TComboBox;
+    qryPesquisaID_FUN: TIntegerField;
+    qryPesquisaNOME_FUN: TStringField;
+    qryPesquisaEND_FUN: TStringField;
+    qryPesquisaCPF_FUN: TStringField;
+    qryPesquisaFONE_FUN: TStringField;
+    qryPesquisaDATA_NASIMENTO_FUN: TDateField;
+    qryPesquisaLOGIN_FUN: TStringField;
+    qryPesquisaSENHA_FUN: TStringField;
+    qryPesquisaSITUACAO: TIntegerField;
+    qryPesquisaBAIRRO_FUN: TStringField;
+    qryPesquisaCEP_FUN: TStringField;
+    qryPesquisaDATA_ADMISSAO_FUN: TDateField;
+    qryPesquisaDATA_DEMISSAO_FUN: TDateField;
+    qryPesquisaCARGO_FUN: TStringField;
+    qryPesquisaNUMERO_END_FUN: TStringField;
+    procedure FormShow(Sender: TObject);
+    procedure edtNomeChange(Sender: TObject);
+    procedure cbCampoPesqChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPesqFuncionarios: TfrmPesqFuncionarios;
+
+implementation
+
+{$R *.dfm}
+
+uses untDM;
+
+procedure TfrmPesqFuncionarios.cbCampoPesqChange(Sender: TObject);
+begin
+  edtNomeChange(Sender);
+
+end;
+
+procedure TfrmPesqFuncionarios.edtNomeChange(Sender: TObject);
+begin
+if cbCampoPesq.Text = 'Nome' then
+  begin
+  qryPesquisa.Close;
+  qryPesquisa.SQL.Clear;
+  qryPesquisa.sql.Add('SELECT * FROM FUNCIONARIO ');
+  qryPesquisa.SQL.Add('WHERE NOME_FUN like :P1');
+  qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtNome.Text + '%';
+    qryPesquisa.Open;
+end
+else
+  if cbCampoPesq.Text = 'Endereço' then
+     begin
+  qryPesquisa.Close;
+  qryPesquisa.SQL.Clear;
+  qryPesquisa.sql.Add('SELECT * FROM FUNCIONARIO ');
+  qryPesquisa.SQL.Add('WHERE END_FUN like :P1');
+  qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtNome.Text + '%';
+    qryPesquisa.Open;
+     end;
+
+  if cbCampoPesq.Text = 'CPF' then
+     begin
+  qryPesquisa.Close;
+  qryPesquisa.SQL.Clear;
+  qryPesquisa.sql.Add('SELECT * FROM FUNCIONARIO ');
+  qryPesquisa.SQL.Add('WHERE CPF_FUN like :P1');
+  qryPesquisa.ParamByName('P1').AsString :=
+                        '%' + edtNome.Text + '%';
+    qryPesquisa.Open;
+     end;
+
+end;
+
+procedure TfrmPesqFuncionarios.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  qryPesquisa.Close;
+end;
+
+procedure TfrmPesqFuncionarios.FormShow(Sender: TObject);
+begin
+  qryPesquisa.Open();
+end;
+
+end.

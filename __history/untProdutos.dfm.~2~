@@ -1,0 +1,80 @@
+object frmProdutos: TfrmProdutos
+  Left = 0
+  Top = 0
+  Caption = 'Produtos'
+  ClientHeight = 420
+  ClientWidth = 729
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 729
+    Height = 41
+    Align = alTop
+    TabOrder = 0
+    ExplicitLeft = 232
+    ExplicitTop = 160
+    ExplicitWidth = 185
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 376
+    Width = 729
+    Height = 44
+    Align = alBottom
+    TabOrder = 1
+    object btnExcluir: TButton
+      Left = 160
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = 'Excluir'
+      TabOrder = 0
+    end
+    object btnNovo: TButton
+      Left = 56
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = 'Novo'
+      TabOrder = 1
+    end
+    object btnGravar: TButton
+      Left = 249
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = 'Gravar'
+      TabOrder = 2
+    end
+    object btnCancelar: TButton
+      Left = 336
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = 'Cancelar'
+      TabOrder = 3
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 41
+    Width = 729
+    Height = 335
+    Align = alClient
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+end

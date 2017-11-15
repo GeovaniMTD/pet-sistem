@@ -1,0 +1,115 @@
+unit untFuncionario;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.DBCtrls, Vcl.ExtCtrls, Vcl.Buttons;
+
+type
+  TfrmFuncionario = class(TForm)
+    Label1: TLabel;
+    dbeNome: TDBEdit;
+    dsFuncionario: TDataSource;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    DBEdit4: TDBEdit;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Label6: TLabel;
+    SpeedButton1: TSpeedButton;
+    Panel1: TPanel;
+    Label7: TLabel;
+    DBEdit6: TDBEdit;
+    Label8: TLabel;
+    DBEdit7: TDBEdit;
+    Panel2: TPanel;
+    btnCancelar: TButton;
+    btnGravar: TButton;
+    btnExcluir: TButton;
+    btnNovo: TButton;
+    Label9: TLabel;
+    dbeCodFun: TDBEdit;
+    procedure FormShow(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure dsFuncionarioStateChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFuncionario: TfrmFuncionario;
+
+implementation
+
+{$R *.dfm}
+
+uses  untDM;
+
+procedure TfrmFuncionario.btnCancelarClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Close;
+end;
+
+procedure TfrmFuncionario.btnExcluirClick(Sender: TObject);
+begin
+  dm.qryFuncionario.Delete;
+end;
+
+procedure TfrmFuncionario.btnGravarClick(Sender: TObject);
+begin
+
+  if (dm.qryCliente.State = dsInsert) then
+  begin
+    dm.qryUltimo.Close;
+    dm.qryUltimo.SQL.Clear;
+    dm.qryUltimo.SQL.Add('SELECT MAX(ID_FUN) AS ULTIMO FROM FUNCIONARIO');
+    dm.qryUltimo.Open;
+
+    dm.qryFuncionarioID_FUN.AsInteger :=
+    dm.qryUltimo.FieldByName('ULTIMO').AsInteger + 1;
+  end;
+
+  dm.qryFuncionario.Post;
+end;
+
+procedure TfrmFuncionario.btnNovoClick(Sender: TObject);
+begin
+
+  dm.qryFuncionario.Insert;
+  dbeNome.SetFocus;
+end;
+
+procedure TfrmFuncionario.dsFuncionarioStateChange(Sender: TObject);
+begin
+   if (dm.qryFuncionario.State in [dsInsert,dsEdit]) then
+  begin
+    btnNovo.Visible    := False;
+    btnExcluir.Visible := False;
+    btnGravar.Visible  := True;
+    btnCancelar.Visible:= True;
+  end
+  else
+  begin
+    btnNovo.Visible    := True;
+    btnExcluir.Visible := True;
+    btnGravar.Visible  := False;
+    btnCancelar.Visible:= False;
+  end;
+end;
+
+procedure TfrmFuncionario.FormShow(Sender: TObject);
+begin
+  dm.qryFuncionario.open();
+end;
+
+end.

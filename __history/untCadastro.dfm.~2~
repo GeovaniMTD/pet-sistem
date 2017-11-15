@@ -1,0 +1,30 @@
+object frmCadastro: TfrmCadastro
+  Left = 0
+  Top = 0
+  Align = alRight
+  Caption = 'frmCadastro'
+  ClientHeight = 201
+  ClientWidth = 447
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object FDQuery1: TFDQuery
+    Left = 168
+    Top = 96
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 272
+    Top = 80
+  end
+  object CONEXAO: TFDConnection
+    Left = 216
+    Top = 128
+  end
+end
